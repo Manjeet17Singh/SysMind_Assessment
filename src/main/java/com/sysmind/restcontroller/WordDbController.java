@@ -11,34 +11,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sysmind.entity.Request;
-import com.sysmind.entity.Response;
+import com.sysmind.entity.WordEntityResponse;
 import com.sysmind.service.WordService;
-
-
-/*
- * Request will be redirected to this controller 
- */
 
 @CrossOrigin
 @RestController()
 @RequestMapping("/api")
-public class WordController {
+public class WordDbController {
+
 	@Autowired
 	WordService wordService;
 	
 	@CrossOrigin
-    @RequestMapping( produces = MediaType.APPLICATION_JSON, method = RequestMethod.POST, value = "/findWordIndex")
-    public ResponseEntity<Response> findWord(@RequestBody Request request) {
-		Response response = new Response();
-		if(request != null && request.Word != null && request.WordList != null)
-		{
-			response = wordService.FindIndexes(request);
-		}
-		else
-		{
-			response.validationResult.AddError("One or more parameters in request are null", "VALIDATION");
-		}
-		return new ResponseEntity<>(response, HttpStatus.OK);
+    @RequestMapping( produces = MediaType.APPLICATION_JSON, method = RequestMethod.POST, value = "/saveWordDb")
+    public ResponseEntity<WordEntityResponse> findWord(@RequestBody String word) {
+		WordEntityResponse wordEntityResponse = new WordEntityResponse();
+		wordEntityResponse = wordService.SaveWord(word);
+		return new ResponseEntity<>(wordEntityResponse, HttpStatus.OK);
 	}
+	
+
 }

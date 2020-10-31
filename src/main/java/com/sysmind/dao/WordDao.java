@@ -1,5 +1,7 @@
 package com.sysmind.dao;
 
-public interface WordDao {
+import com.sysmind.entity.WordEntityResponse;
 
+public interface WordDao {
+	public WordEntityResponse SaveWord(String word);
 }

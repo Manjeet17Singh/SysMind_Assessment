@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sysmind.dao.WordDao;
 import com.sysmind.entity.Request;
 import com.sysmind.entity.Response;
+import com.sysmind.entity.WordEntityResponse;
 
 /*
  * This is service layer which contains business logic
@@ -15,6 +18,9 @@ import com.sysmind.entity.Response;
 
 @Service
 public class WordServiceImpl implements WordService{
+	@Autowired
+	WordDao wordDao;
+	
 	public Response FindIndexes(Request request)
 	{
 		//Initial Conditions
@@ -71,6 +77,20 @@ public class WordServiceImpl implements WordService{
 	        response.setIndexes(result);
 		}catch(Exception ex)
 		{
+			response.validationResult.AddError("ERROR : An error occured" + ex.getMessage(), "EXCEPTION");
+		}
+    	return response;
+	}
+	
+	public WordEntityResponse SaveWord(String word)
+	{
+		WordEntityResponse response = new WordEntityResponse();
+		try
+		{
+			response = wordDao.SaveWord(word);
+		}catch(Exception ex)
+		{
+			response.setResult(false);
 			response.validationResult.AddError("ERROR : An error occured" + ex.getMessage(), "EXCEPTION");
 		}
     	return response;
