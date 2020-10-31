@@ -37,8 +37,7 @@ public class WordController {
 		}
 		else
 		{
-			response.validationResult.ErrorType = "VALIDATION";
-			response.validationResult.Errors.add("One or more parameters in request are null");
+			response.validationResult.AddError("One or more parameters in request are null", "VALIDATION");
 		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

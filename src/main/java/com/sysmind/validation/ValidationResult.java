@@ -8,11 +8,16 @@ import lombok.Setter;
 
 @Getter @Setter
 public class ValidationResult { 
-	private String None ="None";
 	public ValidationResult() {
 		Errors = new ArrayList<String>();
 	}
-	public String ErrorType = None;
-    public List<String> Errors;    
-    public boolean IsValid = (Errors == null || Errors.size() == 0);
+	private String ErrorType = "None";
+    private List<String> Errors;    
+    private boolean IsValid = true;
+    public void AddError(String error, String errorType)
+    {
+    	this.ErrorType = errorType;
+    	this.IsValid = false;
+    	this.Errors.add(error);
+    }
 }

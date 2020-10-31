@@ -1,5 +1,6 @@
 package com.sysmind.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.sysmind.validation.ValidationResult;
@@ -11,7 +12,8 @@ import lombok.Setter;
 public class Response{
 	public Response() {
 		validationResult = new ValidationResult();
+		indexes = new ArrayList<Integer>();
 	}
 	public ValidationResult validationResult;
-	private List<Integer> Indexes;
+	private List<Integer> indexes;
 }
