@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.sysmind.dao.WordDao;
 import com.sysmind.entity.Request;
 import com.sysmind.entity.Response;
+import com.sysmind.entity.WordEntityListResponse;
 import com.sysmind.entity.WordEntityResponse;
 
 /*
@@ -21,30 +22,30 @@ public class WordServiceImpl implements WordService{
 	@Autowired
 	WordDao wordDao;
 	
-	public Response FindIndexes(Request request)
+	public Response findIndexes(Request request)
 	{
 		//Initial Conditions
 		Response response = new Response();
 		try
 		{
-			if(request.Word.length()==0 || request.WordList.size()==0) {
-				response.validationResult.AddError("One or more inputs a empty string", "INPUT");
+			if(request.word.length()==0 || request.wordList.size()==0) {
+				response.validationResult.addError("One or more inputs a empty string", "INPUT");
 				return response;
 			}
 				
 			//Local variables
-	        int wordLength = request.WordList.get(0).length(); 
-	        int totalWordListLength = request.WordList.size()*wordLength; 
-			String word = request.Word;
-			String wordList[] = new String[request.WordList.size()];
+	        int wordLength = request.wordList.get(0).length(); 
+	        int totalWordListLength = request.wordList.size()*wordLength; 
+			String word = request.word;
+			String wordList[] = new String[request.wordList.size()];
 	        HashMap<String,Integer> wordListMap = new HashMap<String,Integer>();
 			List<Integer> result = new ArrayList<Integer>();			
 			int index = 0;
 			
-			for (String val : request.WordList) {
+			for (String val : request.wordList) {
 				if(val.length() != wordLength)
 				{
-					response.validationResult.AddError("Words are of unequal size", "INPUT");
+					response.validationResult.addError("Words are of unequal size", "INPUT");
 					return response;
 				}
 				wordList[index++] = val;
@@ -77,21 +78,38 @@ public class WordServiceImpl implements WordService{
 	        response.setIndexes(result);
 		}catch(Exception ex)
 		{
-			response.validationResult.AddError("ERROR : An error occured" + ex.getMessage(), "EXCEPTION");
+			response.validationResult.addError("ERROR : An error occured" + ex.getMessage(), "EXCEPTION");
 		}
     	return response;
 	}
 	
-	public WordEntityResponse SaveWord(String word)
+	
+	
+	public WordEntityResponse saveWord(String word)
 	{
 		WordEntityResponse response = new WordEntityResponse();
 		try
 		{
-			response = wordDao.SaveWord(word);
+			response = wordDao.saveWord(word);
 		}catch(Exception ex)
 		{
 			response.setResult(false);
-			response.validationResult.AddError("ERROR : An error occured" + ex.getMessage(), "EXCEPTION");
+			response.validationResult.addError("ERROR : An error occured" + ex.getMessage(), "EXCEPTION");
+		}
+    	return response;
+	}
+	
+	
+	
+	public WordEntityListResponse getWords()
+	{
+		WordEntityListResponse response = new WordEntityListResponse();
+		try
+		{
+			response = wordDao.getWords();
+		}catch(Exception ex)
+		{
+			response.validationResult.addError("ERROR : An error occured" + ex.getMessage(), "EXCEPTION");
 		}
     	return response;
 	}

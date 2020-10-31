@@ -7,6 +7,6 @@ import lombok.Setter;
 
 @Getter @Setter
 public class Request {
-	public String Word;
-	public List<String> WordList;
+	public String word;
+	public List<String> wordList;
 }

@@ -43,5 +43,12 @@ public class BaseController {
 		request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
         return new ModelAndView("redirect:/api/saveWordDb");	
 	}
-
+	
+	
+	@CrossOrigin
+    @RequestMapping( produces = MediaType.APPLICATION_JSON, method = RequestMethod.GET, value = "/getWords")
+    public ModelAndView getWords(HttpServletRequest request) {
+		request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+        return new ModelAndView("redirect:/api/getWordsDb");	
+	}
 }

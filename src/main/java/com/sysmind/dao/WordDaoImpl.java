@@ -1,5 +1,7 @@
 package com.sysmind.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionException;
 import org.hibernate.SessionFactory;
@@ -9,6 +11,7 @@ import org.hibernate.service.ServiceRegistry;
 import org.springframework.stereotype.Repository;
 
 import com.sysmind.entity.WordEntity;
+import com.sysmind.entity.WordEntityListResponse;
 import com.sysmind.entity.WordEntityResponse;
 
 /*
@@ -34,7 +37,7 @@ public class WordDaoImpl implements WordDao{
 	}
 	
 	
-	public WordEntityResponse SaveWord(String word)
+	public WordEntityResponse saveWord(String word)
 	{
 		WordEntityResponse response = new WordEntityResponse();
 		Session sessionObj = null;
@@ -48,13 +51,13 @@ public class WordDaoImpl implements WordDao{
            response.setResult(true);
            
         }catch(NullPointerException nullPointerException){
-        	response.validationResult.AddError(nullPointerException.getMessage(), "DB ERROR");
+        	response.validationResult.addError(nullPointerException.getMessage(), "DB ERROR");
         	
         }catch(Exception sqlException){        	
            if(sessionObj!=null && sessionObj.getTransaction()!=null) {
                sessionObj.getTransaction().rollback();
            }
-           response.validationResult .AddError(sqlException.getMessage(), "DB ERROR");          
+           response.validationResult .addError(sqlException.getMessage(), "DB ERROR");          
         }
         finally {
            if(sessionObj != null) {
@@ -62,6 +65,36 @@ public class WordDaoImpl implements WordDao{
            }
        }  
        return response;		
+	}
+	
+	
+	
+	public WordEntityListResponse getWords()
+	{
+		WordEntityListResponse response = new WordEntityListResponse();
+		Session sessionObj = null;
+        try {
+           sessionObj = buildSessionFactory().openSession();           
+           sessionObj.beginTransaction();
+           List<WordEntity> list = sessionObj.createCriteria(WordEntity.class).list(); 
+           response.setResult(list);
+           sessionObj.getTransaction().commit(); 
+           
+        }catch(NullPointerException nullPointerException){
+        	response.validationResult.addError(nullPointerException.getMessage(), "DB ERROR");
+        	
+        }catch(Exception sqlException){        	
+           if(sessionObj!=null && sessionObj.getTransaction()!=null) {
+               sessionObj.getTransaction().rollback();
+           }
+           response.validationResult .addError(sqlException.getMessage(), "DB ERROR");          
+        }
+        finally {
+           if(sessionObj != null) {
+               sessionObj.close();
+           }
+       }  
+       return response;	
 	}
 
 }

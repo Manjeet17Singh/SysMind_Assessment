@@ -31,13 +31,13 @@ public class WordController {
     @RequestMapping( produces = MediaType.APPLICATION_JSON, method = RequestMethod.POST, value = "/findWordIndex")
     public ResponseEntity<Response> findWord(@RequestBody Request request) {
 		Response response = new Response();
-		if(request != null && request.Word != null && request.WordList != null)
+		if(request != null && request.word != null && request.wordList != null)
 		{
-			response = wordService.FindIndexes(request);
+			response = wordService.findIndexes(request);
 		}
 		else
 		{
-			response.validationResult.AddError("One or more parameters in request are null", "VALIDATION");
+			response.validationResult.addError("One or more parameters in request are null", "VALIDATION");
 		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

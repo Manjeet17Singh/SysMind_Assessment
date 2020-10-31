@@ -9,15 +9,15 @@ import lombok.Setter;
 @Getter @Setter
 public class ValidationResult { 
 	public ValidationResult() {
-		Errors = new ArrayList<String>();
+		errors = new ArrayList<String>();
 	}
-	private String ErrorType = "None";
-    private List<String> Errors;    
-    private boolean IsValid = true;
-    public void AddError(String error, String errorType)
+	private String errorType = "None";
+    private List<String> errors;    
+    private boolean isValid = true;
+    public void addError(String error, String errorType)
     {
-    	this.ErrorType = errorType;
-    	this.IsValid = false;
-    	this.Errors.add(error);
+    	this.errorType = errorType;
+    	this.isValid = false;
+    	this.errors.add(error);
     }
 }
