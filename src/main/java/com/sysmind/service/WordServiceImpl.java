@@ -19,49 +19,56 @@ public class WordServiceImpl implements WordService{
 	{
 		//Initial Conditions
 		Response response = new Response();
-		if(request.Word.length()==0 || request.WordList.size()==0) {
-			response.setIndexes(new ArrayList<>());
-			return response;
-		}
+		try
+		{
+			if(request.Word.length()==0 || request.WordList.size()==0) {
+				response.setIndexes(new ArrayList<>());
+				return response;
+			}
+				
+			//Local variables
+			String word = request.Word;
+			String wordList[] = new String[request.WordList.size()];
+			List<Integer> result = new ArrayList<Integer>();			
+			int index=0;
 			
-		//Local variables
-		String word = request.Word;
-		String wordList[] = new String[request.WordList.size()];
-		List<Integer> result = new ArrayList<Integer>();			
-		int index=0;
-		
-		for (String string : request.WordList) {
-			wordList[index++] = string;
-		}
-        
-		
-		//main logic
-        HashMap<String,Integer> wordListMap = new HashMap<String,Integer>();        
-        for(int i=0; i<wordList.length; i++){
-        	wordListMap.put(wordList[i], wordListMap.getOrDefault(wordList[i], 0) + 1);
-        }
-        
-        int totalWordListLength = wordList.length*wordList[0].length(); 
-        int wordLength = wordList[0].length(); 
-        
-        index = 0;
-        while(index <= word.length() - totalWordListLength){  
-	        String sub = word.substring(index, index + totalWordListLength);
-	        HashMap<String,Integer> subStringMap = new HashMap<String,Integer>();
-	        int k = 0;
-	        int n = 0;
+			for (String string : request.WordList) {
+				wordList[index++] = string;
+			}
 	        
-	        while(k<wordList.length){
-	          String temp = sub.substring(n, n+wordLength);
-	          subStringMap.put(temp, subStringMap.getOrDefault(temp,0) + 1);
-	          n = n + wordLength; 
-	          k++;  
+			
+			//main logic
+	        HashMap<String,Integer> wordListMap = new HashMap<String,Integer>();        
+	        for(int i=0; i<wordList.length; i++){
+	        	wordListMap.put(wordList[i], wordListMap.getOrDefault(wordList[i], 0) + 1);
 	        }
-	        if(wordListMap.equals(subStringMap))
-	        	result.add(index);
-	        index++;  
-        }
-        response.setIndexes(result);;
+	        
+	        int totalWordListLength = wordList.length*wordList[0].length(); 
+	        int wordLength = wordList[0].length(); 
+	        
+	        index = 0;
+	        while(index <= word.length() - totalWordListLength){  
+		        String sub = word.substring(index, index + totalWordListLength);
+		        HashMap<String,Integer> subStringMap = new HashMap<String,Integer>();
+		        int k = 0;
+		        int n = 0;
+		        
+		        while(k<wordList.length){
+		          String temp = sub.substring(n, n + wordLength);
+		          subStringMap.put(temp, subStringMap.getOrDefault(temp,0) + 1);
+		          n = n + wordLength; 
+		          k++;  
+		        }
+		        if(wordListMap.equals(subStringMap))
+		        	result.add(index);
+		        index++;  
+	        }
+	        response.setIndexes(result);
+		}catch(Exception ex)
+		{
+			response.validationResult.ErrorType = "EXCEPTION";
+			response.validationResult.Errors.add("ERROR : An error occured" + ex.getMessage());
+		}
     	return response;
 	}
 

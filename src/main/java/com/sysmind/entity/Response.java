@@ -8,7 +8,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class Response extends ValidationResult{
-	List<Integer> Indexes;
-
+public class Response{
+	public Response() {
+		validationResult = new ValidationResult();
+	}
+	public ValidationResult validationResult;
+	private List<Integer> Indexes;
 }
